@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Candidate {
+  id                 Int              @id @default(autoincrement())
+  name               String
+  yearsOfExperience  Float
+  location           String
+  expectedSalary     Float
+  skills             CandidateSkill[]
+}
+
+model CandidateSkill {
+  id          Int       @id @default(autoincrement())
+  skill       String
+  candidateId Int
+
+  candidate Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  @@unique([candidateId, skill])
+}
+
+model Job {
+  id                 Int        @id @default(autoincrement())
+  title              String
+  minYearsExperience Float
+  location           String
+  salaryMin          Float
+  salaryMax          Float
+  remoteAllowed      Boolean
+  requiredSkills     JobSkill[]
+}
+
+model JobSkill {
+  id     Int       @id @default(autoincrement())
+  skill  String
+  type   SkillType
+  jobId  Int
+
+  job Job @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([jobId, skill])
+}
+
+enum SkillType {
+  MUST_HAVE
+  NICE_TO_HAVE
+}
