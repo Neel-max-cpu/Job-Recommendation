@@ -1,7 +1,5 @@
-export enum SkillType {
-  MUST_HAVE = "MUST_HAVE",
-  NICE_TO_HAVE = "NICE_TO_HAVE",
-}
+import { SkillType } from "@prisma/client";
+export { SkillType };
 
 export interface JobSkill {
   id: number;
